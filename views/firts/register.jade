@@ -1,0 +1,28 @@
+extends ../layouts/layouts.jade
+block   container
+    div(class="d-flex align-items-center justify-content-center" style="height: 100vh;")
+        div(class="card border-primary p-2 form-row" style="width: 60%;")
+            h3(class="text-center") login
+            form(action="/saves", method="post")
+                div(class="form-row")
+                    div(class="form-group col-md-6")
+                        label(for="username") Username
+                        input(type="text" class="form-control" name="username")
+                    div(class ="form-group col-md-6")
+                        label(for="name") Name
+                        input(type="text" name="name" class="form-control")
+                    div(class="group-form col-md-6")
+                        label(for="age") Age
+                        input(type="number" class="form-control" name="age")
+                    div(class="form-group col-md-6")
+                        label(for="email") Email
+                        input(type="email" name="email" placeholder="email" class="form-control")
+                    div(class="form-group col-md-6")
+                        label(for="password") Password
+                        input(type="text" name="password" class="form-control")
+                    div(class="form-group col-md-6")
+                        label(for="password-conf") Password Confirm
+                        input(type="text" name="confirmation" class="form-control")
+                    div(class="d-flex justify-content-center")
+                        input(type="submit", value="post" class="btn btn-primary btn-sm btn-block")
+
