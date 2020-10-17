@@ -1,0 +1,16 @@
+extends ../layouts/layouts.jade
+block   container
+    div(class="d-flex align-items-center justify-content-center" style="height:100vh;")
+        div(class="form-row")
+            form(action="/inits", method="post")
+                div(class="form-group input-group-sm ")
+                    label(for="user") Username
+                    input(type="text", name="user" class="form-control")
+                div(class="form-group input-group-sm")
+                    label(for="password")   Password
+                    input(type="text" name="password" class="form-control")
+                div(class="row")
+                    div(class="col-xs-12 col-sm-6")
+                        input(type="submit" value="Session" class="btn btn-primary")
+                    div(class="col-xs-12 col-sm-6 text-right")
+                        a(href="/register" class="btn") no tengo cuenta

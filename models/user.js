@@ -1,6 +1,6 @@
 var mongo = require("mongoose");
 
-mongo.connect("mongodb://localhost/mongodb1");
+mongo.connect("mongodb://localhost:27017/mongodb1", {useNewUrlParser:true, useUnifiedTopology:true});
 
 var Schema = mongo.Schema;
 

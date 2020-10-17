@@ -2,6 +2,9 @@ var express = require("express");
 var bodyparser = require("body-parser");
 var User = require("./models/user").User;
 var session = require("express-session");
+var ruta_app = require("./routes");
+var session_midd = require("./middlewares/session");
+var methodoverride = require("method-override");
 var app = express();
 
 app.use(session({
@@ -10,8 +13,9 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+app.use(methodoverride("_method"));
 //enlace para los archivos estaticos css, js, img
-app.use('/style', express.static('public'));
+app.use('/app/style', express.static('public'));
 app.use('/img', express.static('asset'));
 //para obtener datos de un formulario
 app.use(bodyparser.json());
@@ -20,7 +24,7 @@ app.use(bodyparser.urlencoded({ extended: true }));
 app.set('view engine', 'jade');
 //ruta get
 app.get('/login', function(req, resp){
-    resp.render("firts/login");
+    resp.render("home/index");
 })
 app.get('/', function (req, respuesta) {
     console.log(req.session.user_id);
@@ -60,8 +64,11 @@ app.post('/inits', function(req, resp){
     User.findOne({username: user, password: pas}, function(err, data){
         console.log(data);
         req.session.user_id = data._id;
-        resp.send("Datos encontrados");
+        resp.redirect("/app");
     })
 });
+// Rutes
+app.use('/app', session_midd);
+app.use("/app", ruta_app);
 
 app.listen(8080);
