@@ -6,7 +6,8 @@ mongodb.set('useFindAndModify', true);
 var Schema = mongodb.Schema;
 
 var imgSchema = new Schema({
-    title : {type:String, required:true}
+    title : {type:String, required:true},
+    creator:{type: Schema.Types.ObjectId, ref: "User"}
 });
 var Imagen = mongodb.model("Imagen", imgSchema);
 

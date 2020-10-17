@@ -1,7 +1,7 @@
 extends ../../layouts/layouts.jade
 block container
     div(class="d-flex align-items-center justify-content-center" style="height:100vh;")
-        form(action="/app/imagenes", method="post")
+        form(action="/app/imagenes", method="post" enctype="multipart/form-data")
             div(class="form-group")
                 label(for="titulo") Titulo
                 input(type="text" name="titulo" class="form-control")

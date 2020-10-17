@@ -1,17 +1,20 @@
 var express = require("express");
 var bodyparser = require("body-parser");
 var User = require("./models/user").User;
-var session = require("express-session");
+//var session = require("express-session");
 var ruta_app = require("./routes");
 var session_midd = require("./middlewares/session");
 var methodoverride = require("method-override");
+var cookieSession = require("cookie-session");
+var formidable = require("express-formidable");
+
 var app = express();
 
-app.use(session({
-    secret: "1215gdfg54tyrty",
-    //modifica la session
-    resave: false,
-    saveUninitialized: false
+app.use(formidable({}));
+
+app.use(cookieSession({
+    name : "session",
+    keys : ['clave1', 'clave2']
 }));
 app.use(methodoverride("_method"));
 //enlace para los archivos estaticos css, js, img
