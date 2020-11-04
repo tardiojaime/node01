@@ -1,35 +1,38 @@
 var express = require("express");
 var Imagen = require("./models/imagenes");
+var find_imagenes = require("./middlewares/find_image");
 
 var route = express.Router();
 
 route.get('/', function(req, resp){
     resp.render("app/home");
 });
+//cerrar session
+route.post("/salir", function(req, resp){
+    req.session = null;
+    resp.redirect("app");
+});
 //new form
 route.get('/imagenes/new', function(req, resp){
     resp.render("app/img/new");
 });
+// Enlace al middleware
+route.all("/imagenes/:id*", find_imagenes);
+
 route.get('/imagenes/:id/edit', function(req,resp){
-    Imagen.findById(req.params.id, function(err, img){
-        resp.render("app/img/edit", {img:img});
-    });
+    resp.render("app/img/edit");
 });
 // rest
 route.route('/imagenes/:id')
     .get(function(req, resp){
-        Imagen.findById(req.params.id, function(err, img){
-            resp.render("app/img/show", {img: img});
-        })
+        resp.render("app/img/show");
     })
     .put(function(req, resp){
-        Imagen.findById(req.params.id, function(err, img){
-            img.title = req.body.titulo;
-            img.save().then(function(us){
-                resp.render("app/img/show", {img:img})
-            }, function(err){
-                resp.send("Datos erroneos");
-            })
+        resp.locals.img.title = req.body.titulo;
+        resp.locals.img.save().then(function(us){
+            resp.render("app/img/show")
+        }, function(err){
+            resp.send("Datos erroneos");
         })
     })
     .delete(function(req, resp){
@@ -44,7 +47,7 @@ route.route('/imagenes/:id')
     });
     route.route('/imagenes')
         .get(function(req, resp){
-            Imagen.find({}, function(err, data){
+            Imagen.find({creator: resp.locals.user._id}, function(err, data){
                 if(err){
                     resp.redirect("/app"); return;
                 }
@@ -52,17 +55,18 @@ route.route('/imagenes/:id')
             })
         })
         .post(function(req, resp){
-            var data = {
-                title : req.body.titulo
-            }
-            var Imag = new Imagen(data);
-            Imag.save(function(err){
-                if(!err){
-                    resp.redirect('/app/imagenes/'+Imag._id);
-                }else{
-                    resp.render(err);
-                }
+            let imag = {
+                title: req.body.titulo,
+                creator: resp.locals.user._id
+            };
+            let image  = new Imagen(imag);
+            image.save().then(function(img){
+                resp.redirect("imagenes");
+            }, function(err){
+                console.log(String(err));
+                resp.send("Datos no guardados");
             })
+            
         });
 
 module.exports = route;

@@ -6,11 +6,8 @@ var ruta_app = require("./routes");
 var session_midd = require("./middlewares/session");
 var methodoverride = require("method-override");
 var cookieSession = require("cookie-session");
-var formidable = require("express-formidable");
 
 var app = express();
-
-app.use(formidable({}));
 
 app.use(cookieSession({
     name : "session",
@@ -28,7 +25,8 @@ app.set('view engine', 'jade');
 //ruta get
 app.get('/login', function(req, resp){
     resp.render("home/index");
-})
+});
+
 app.get('/', function (req, respuesta) {
     console.log(req.session.user_id);
     respuesta.render("firts/home");
@@ -65,9 +63,13 @@ app.post('/inits', function(req, resp){
     let pas = req.body.password;
     console.log("User: "+user + " Password: "+pas);
     User.findOne({username: user, password: pas}, function(err, data){
-        console.log(data);
-        req.session.user_id = data._id;
-        resp.redirect("/app");
+        if(!err){
+            console.log(data);
+            req.session.user_id = data._id;
+            resp.redirect("/app");
+        }else{
+            resp.send("/login");
+        }
     })
 });
 // Rutes

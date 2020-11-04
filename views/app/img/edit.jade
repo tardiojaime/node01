@@ -3,7 +3,7 @@ block container
     div(class="d-flex align-items-center justify-content-center" style="height:100vh;")
         form(action="/app/imagenes/#{img.id}?_method=PUT", method="post")
             div(class="form-group")
-                label(for="titulo") Titulo
+                label(for="titulo") Titulo edit
                 input(type="text" name="titulo" class="form-control" value="#{img.title}")
             div(class="form-group")
                 label(for="file") File

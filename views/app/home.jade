@@ -1,5 +1,9 @@
 extends ../layouts/layouts.jade
 block container
-    h3  hola #{user.email}
-    a(href="/app/imagenes/new" class="btn btn-danger") New Image
-    a(href="/app/imagenes" class="btn btn-info") Imgs
+	form(action="/app/salir" method="POST")
+		div(class="form-group")
+			input(type="submit" value="Salir")
+
+	h3  hola #{user.email}
+	a(href="/app/imagenes/new" class="btn btn-danger") New Image
+	a(href="/app/imagenes" class="btn btn-info") Imgs
